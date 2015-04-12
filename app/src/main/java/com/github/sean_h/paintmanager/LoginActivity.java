@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,6 +67,8 @@ public class LoginActivity extends Activity {
         mProgressView = findViewById(R.id.login_progress);
 
         mPreferences = this.getSharedPreferences("com.github.sean_h.paintmanager", MODE_PRIVATE);
+
+        startPaintListActivity();
     }
 
     /**
@@ -133,6 +136,7 @@ public class LoginActivity extends Activity {
                             SharedPreferences.Editor editor = mPreferences.edit();
                             try {
                                 editor.putString("auth_token", response.getString("auth_token"));
+                                startPaintListActivity();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -161,6 +165,11 @@ public class LoginActivity extends Activity {
 
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
+    }
+
+    private void startPaintListActivity() {
+        Intent paintListIntent = new Intent(this, PaintListActivity.class);
+        startActivity(paintListIntent);
     }
 
     /**
