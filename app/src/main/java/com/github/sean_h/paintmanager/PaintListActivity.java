@@ -16,7 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 public class PaintListActivity extends ActionBarActivity
@@ -116,6 +119,8 @@ public class PaintListActivity extends ActionBarActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+        private ListView mPaintList;
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -135,6 +140,19 @@ public class PaintListActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_paint_list, container, false);
+
+            mPaintList = (ListView) rootView.findViewById(R.id.paint_list);
+            mPaintList.setAdapter(new ArrayAdapter<>(
+                    getActivity(),
+                    android.R.layout.simple_list_item_1,
+                    android.R.id.text1,
+                    new String[] {
+                            "Red",
+                            "Green",
+                            "Blue",
+                    }
+            ));
+
             return rootView;
         }
 
