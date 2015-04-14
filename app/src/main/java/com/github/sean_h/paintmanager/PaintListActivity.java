@@ -19,6 +19,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.orm.query.Select;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,6 +57,39 @@ public class PaintListActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //Remove all paints from database
+        Paint.deleteAll(Paint.class);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.1.166:4567/paints.json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                List<Paint> paints = new ArrayList<>();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        String paintName = response.getJSONObject(i).getString("name");
+                        paints.add(new Paint(paintName));
+                        //Paint paint = new Paint(paintName);
+                        //paint.save();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // Only take the first 10 elements
+                    if (i == 10) {
+                        break;
+                    }
+                }
+
+                Paint.saveInTx(paints);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
     }
 
     @Override
@@ -120,6 +162,7 @@ public class PaintListActivity extends ActionBarActivity
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         private ListView mPaintList;
+        private List<String> mPaintNames;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -134,6 +177,7 @@ public class PaintListActivity extends ActionBarActivity
         }
 
         public PlaceholderFragment() {
+            mPaintNames = new ArrayList<>();
         }
 
         @Override
@@ -146,11 +190,7 @@ public class PaintListActivity extends ActionBarActivity
                     getActivity(),
                     android.R.layout.simple_list_item_1,
                     android.R.id.text1,
-                    new String[] {
-                            "Red",
-                            "Green",
-                            "Blue",
-                    }
+                    mPaintNames
             ));
 
             return rootView;
@@ -161,6 +201,12 @@ public class PaintListActivity extends ActionBarActivity
             super.onAttach(activity);
             ((PaintListActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+
+            mPaintNames.clear();
+            List<Paint> paints = Select.from(Paint.class).orderBy("name").list();
+            for (Paint p : paints) {
+                mPaintNames.add(p.name);
+            }
         }
     }
 
