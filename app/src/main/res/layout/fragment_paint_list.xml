@@ -15,24 +15,24 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <TextView
+        <Spinner
+            android:id="@+id/brands_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/brand"/>
-        <TextView
+            android:gravity="center"/>
+        <Spinner
+            android:id="@+id/ranges_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/range"/>
-        <TextView
+            android:gravity="center"/>
+        <Spinner
+            android:id="@+id/statuses_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/status"/>
+            android:gravity="center"/>
     </LinearLayout>
 
     <ListView
