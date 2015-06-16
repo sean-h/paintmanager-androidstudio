@@ -1,27 +1,21 @@
 package com.github.sean_h.paintmanager;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.orm.query.Select;
-
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,38 +48,8 @@ public class PaintListActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        //Remove all paints from database
-        Paint.deleteAll(Paint.class);
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.166:4567/paints.json", new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-                List<Paint> paints = new ArrayList<>();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        String paintName = response.getJSONObject(i).getString("name");
-                        paints.add(new Paint(paintName));
-                        //Paint paint = new Paint(paintName);
-                        //paint.save();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    // Only take the first 10 elements
-                    if (i == 10) {
-                        break;
-                    }
-                }
-
-                Paint.saveInTx(paints);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+        DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
+        dbSyncTask.doInBackground();
     }
 
     @Override
