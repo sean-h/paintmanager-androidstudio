@@ -62,5 +62,19 @@ public class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
             paints.add(p);
         }
         Paint.saveInTx(paints);
+
+        Brand.deleteAll(Brand.class);
+        Brand basicColors = new Brand("Basic Colors");
+        basicColors.save();
+
+        Range.deleteAll(Range.class);
+        new Range("Primary Colors", basicColors).save();
+        new Range("Secondary Colors", basicColors).save();
+
+        PaintStatus.deleteAll(PaintStatus.class);
+        new PaintStatus("Don't Have").save();
+        new PaintStatus("Out Of").save();
+        new PaintStatus("Need").save();
+        new PaintStatus("Have").save();
     }
 }
