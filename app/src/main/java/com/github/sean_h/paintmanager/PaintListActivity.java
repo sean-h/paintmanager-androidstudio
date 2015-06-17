@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.orm.query.Select;
 
@@ -128,6 +129,13 @@ public class PaintListActivity extends ActionBarActivity
         private ListView mPaintList;
         private List<String> mPaintNames;
 
+        private Spinner mBrandSpinner;
+        private List<String> mBrandNames;
+        private Spinner mRangeSpinner;
+        private List<String> mRangeNames;
+        private Spinner mStatusSpinner;
+        private List<String> mStatusNames;
+
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -142,6 +150,9 @@ public class PaintListActivity extends ActionBarActivity
 
         public PlaceholderFragment() {
             mPaintNames = new ArrayList<>();
+            mBrandNames = new ArrayList<>();
+            mRangeNames = new ArrayList<>();
+            mStatusNames = new ArrayList<>();
         }
 
         @Override
@@ -157,6 +168,30 @@ public class PaintListActivity extends ActionBarActivity
                     mPaintNames
             ));
 
+            mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
+            mBrandSpinner.setAdapter(new ArrayAdapter<>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_item,
+                    android.R.id.text1,
+                    mBrandNames
+            ));
+
+            mRangeSpinner = (Spinner) rootView.findViewById(R.id.ranges_spinner);
+            mRangeSpinner.setAdapter(new ArrayAdapter<>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_item,
+                    android.R.id.text1,
+                    mRangeNames
+            ));
+
+            mStatusSpinner = (Spinner) rootView.findViewById(R.id.statuses_spinner);
+            mStatusSpinner.setAdapter(new ArrayAdapter<>(
+                    getActivity(),
+                    android.R.layout.simple_spinner_item,
+                    android.R.id.text1,
+                    mStatusNames
+            ));
+
             return rootView;
         }
 
@@ -170,6 +205,26 @@ public class PaintListActivity extends ActionBarActivity
             List<Paint> paints = Select.from(Paint.class).orderBy("name").list();
             for (Paint p : paints) {
                 mPaintNames.add(p.name);
+            }
+
+            mBrandNames.clear();
+            List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
+            mBrandNames.add(getString(R.string.brand));
+            for (Brand b : brands) {
+                mBrandNames.add(b.name);
+            }
+
+            mRangeNames.clear();
+            List<Range> ranges = Select.from(Range.class).orderBy("name").list();
+            mRangeNames.add(getString(R.string.range));
+            for (Range r : ranges) {
+                mRangeNames.add(r.name);
+            }
+
+            mStatusNames.clear();
+            List<PaintStatus> statuses = Select.from(PaintStatus.class).orderBy("name").list();
+            for (PaintStatus s : statuses) {
+                mStatusNames.add(s.name);
             }
         }
     }
