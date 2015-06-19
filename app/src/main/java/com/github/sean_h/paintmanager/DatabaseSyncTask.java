@@ -52,29 +52,32 @@ public class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void LoadDatabaseFixtures() {
-        Paint.deleteAll(Paint.class);
-
-        String[] paintNames = new String[] {"Red", "Green", "Blue", "Yellow", "White", "Black"};
-        ArrayList<Paint> paints = new ArrayList<>();
-        for (String name : paintNames) {
-            Paint p = new Paint();
-            p.name = name;
-            paints.add(p);
-        }
-        Paint.saveInTx(paints);
+        PaintStatus.deleteAll(PaintStatus.class);
+        PaintStatus dontHave = new PaintStatus("Don't Have");
+        dontHave.save();
+        PaintStatus outOf = new PaintStatus("Out Of");
+        outOf.save();
+        PaintStatus need = new PaintStatus("Need");
+        need.save();
+        PaintStatus have = new PaintStatus("Have");
+        have.save();
 
         Brand.deleteAll(Brand.class);
         Brand basicColors = new Brand("Basic Colors");
         basicColors.save();
 
         Range.deleteAll(Range.class);
-        new Range("Primary Colors", basicColors).save();
-        new Range("Secondary Colors", basicColors).save();
+        Range primaryColors = new Range("Primary Colors", basicColors);
+        primaryColors.save();
+        Range secondaryColors = new Range("Secondary Colors", basicColors);
+        secondaryColors.save();
 
-        PaintStatus.deleteAll(PaintStatus.class);
-        new PaintStatus("Don't Have").save();
-        new PaintStatus("Out Of").save();
-        new PaintStatus("Need").save();
-        new PaintStatus("Have").save();
+        Paint.deleteAll(Paint.class);
+        new Paint("Red", primaryColors, have).save();
+        new Paint("Blue", primaryColors, dontHave).save();
+        new Paint("Yellow", primaryColors, dontHave).save();
+        new Paint("Green", secondaryColors, need).save();
+        new Paint("White", secondaryColors, dontHave).save();
+        new Paint("Black", secondaryColors, dontHave).save();
     }
 }
