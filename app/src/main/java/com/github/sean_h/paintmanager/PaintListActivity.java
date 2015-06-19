@@ -171,7 +171,7 @@ public class PaintListActivity extends ActionBarActivity
             mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
             mBrandSpinner.setAdapter(new ArrayAdapter<>(
                     getActivity(),
-                    android.R.layout.simple_spinner_item,
+                    android.R.layout.simple_spinner_dropdown_item,
                     android.R.id.text1,
                     mBrandNames
             ));
@@ -179,7 +179,7 @@ public class PaintListActivity extends ActionBarActivity
             mRangeSpinner = (Spinner) rootView.findViewById(R.id.ranges_spinner);
             mRangeSpinner.setAdapter(new ArrayAdapter<>(
                     getActivity(),
-                    android.R.layout.simple_spinner_item,
+                    android.R.layout.simple_spinner_dropdown_item,
                     android.R.id.text1,
                     mRangeNames
             ));
@@ -187,7 +187,7 @@ public class PaintListActivity extends ActionBarActivity
             mStatusSpinner = (Spinner) rootView.findViewById(R.id.statuses_spinner);
             mStatusSpinner.setAdapter(new ArrayAdapter<>(
                     getActivity(),
-                    android.R.layout.simple_spinner_item,
+                    android.R.layout.simple_spinner_dropdown_item,
                     android.R.id.text1,
                     mStatusNames
             ));
