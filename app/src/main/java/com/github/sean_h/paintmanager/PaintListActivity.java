@@ -223,6 +223,7 @@ public class PaintListActivity extends ActionBarActivity
 
             mStatusNames.clear();
             List<PaintStatus> statuses = Select.from(PaintStatus.class).orderBy("name").list();
+            mStatusNames.add(getString(R.string.status));
             for (PaintStatus s : statuses) {
                 mStatusNames.add(s.name);
             }
