@@ -1,26 +1,12 @@
 package com.github.sean_h.paintmanager;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
-
-import com.orm.query.Select;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class PaintListActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -60,7 +46,7 @@ public class PaintListActivity extends ActionBarActivity
         switch (position) {
             case 0:
                 fragmentManager.beginTransaction()
-                    .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                    .replace(R.id.container, PaintListFragment.newInstance(position + 1))
                     .commit();
                 break;
         }
@@ -69,7 +55,7 @@ public class PaintListActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = "Paint List";
+                mTitle = getString(R.string.paint_list_title);
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
@@ -115,119 +101,4 @@ public class PaintListActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        private ListView mPaintList;
-        private List<String> mPaintNames;
-
-        private Spinner mBrandSpinner;
-        private List<String> mBrandNames;
-        private Spinner mRangeSpinner;
-        private List<String> mRangeNames;
-        private Spinner mStatusSpinner;
-        private List<String> mStatusNames;
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-            mPaintNames = new ArrayList<>();
-            mBrandNames = new ArrayList<>();
-            mRangeNames = new ArrayList<>();
-            mStatusNames = new ArrayList<>();
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_paint_list, container, false);
-
-            mPaintList = (ListView) rootView.findViewById(R.id.paint_list);
-            mPaintList.setAdapter(new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_list_item_1,
-                    android.R.id.text1,
-                    mPaintNames
-            ));
-
-            mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
-            mBrandSpinner.setAdapter(new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    android.R.id.text1,
-                    mBrandNames
-            ));
-
-            mRangeSpinner = (Spinner) rootView.findViewById(R.id.ranges_spinner);
-            mRangeSpinner.setAdapter(new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    android.R.id.text1,
-                    mRangeNames
-            ));
-
-            mStatusSpinner = (Spinner) rootView.findViewById(R.id.statuses_spinner);
-            mStatusSpinner.setAdapter(new ArrayAdapter<>(
-                    getActivity(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    android.R.id.text1,
-                    mStatusNames
-            ));
-
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((PaintListActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-
-            mPaintNames.clear();
-            List<Paint> paints = Select.from(Paint.class).orderBy("name").list();
-            for (Paint p : paints) {
-                mPaintNames.add(p.name);
-            }
-
-            mBrandNames.clear();
-            List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
-            mBrandNames.add(getString(R.string.brand));
-            for (Brand b : brands) {
-                mBrandNames.add(b.name);
-            }
-
-            mRangeNames.clear();
-            List<Range> ranges = Select.from(Range.class).orderBy("name").list();
-            mRangeNames.add(getString(R.string.range));
-            for (Range r : ranges) {
-                mRangeNames.add(r.name);
-            }
-
-            mStatusNames.clear();
-            List<PaintStatus> statuses = Select.from(PaintStatus.class).orderBy("name").list();
-            mStatusNames.add(getString(R.string.status));
-            for (PaintStatus s : statuses) {
-                mStatusNames.add(s.name);
-            }
-        }
-    }
-
 }
