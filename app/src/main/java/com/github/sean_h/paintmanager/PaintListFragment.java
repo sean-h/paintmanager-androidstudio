@@ -33,14 +33,14 @@ public class PaintListFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private ListView mPaintList;
-    private List<String> mPaintNames;
+    private final List<String> mPaintNames;
 
     private Spinner mBrandSpinner;
-    private List<String> mBrandNames;
+    private final List<String> mBrandNames;
     private Spinner mRangeSpinner;
-    private List<String> mRangeNames;
+    private final List<String> mRangeNames;
     private Spinner mStatusSpinner;
-    private List<String> mStatusNames;
+    private final List<String> mStatusNames;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -168,7 +168,7 @@ public class PaintListFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Uri uri);
     }
 
 }

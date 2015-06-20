@@ -2,7 +2,7 @@ package com.github.sean_h.paintmanager;
 
 import com.orm.SugarRecord;
 
-public class Range extends SugarRecord<Range> {
+class Range extends SugarRecord<Range> {
     String name;
     Brand brand;
 

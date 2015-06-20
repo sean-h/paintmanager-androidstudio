@@ -12,7 +12,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
+class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         LoadDatabaseFixtures();
