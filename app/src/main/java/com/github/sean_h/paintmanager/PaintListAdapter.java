@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class PaintListAdapter extends ArrayAdapter<Paint> {
 
         TextView paintName = (TextView)convertView.findViewById(R.id.paint_name);
         paintName.setText(paint.name);
+
+        ImageView paintColor = (ImageView)convertView.findViewById(R.id.paint_color);
+        paintColor.setImageBitmap(paint.getColorBitmap(50, 50));
 
         return convertView;
     }

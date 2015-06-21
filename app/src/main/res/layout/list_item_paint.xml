@@ -3,9 +3,14 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/paint_color"
+        android:layout_width="32sp"
+        android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/paint_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="32sp"/>
+        android:textSize="32sp"
+        android:paddingLeft="8sp"/>
 </LinearLayout>
