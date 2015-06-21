@@ -1,6 +1,8 @@
 package com.github.sean_h.paintmanager;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.List;
 
 public class PaintListActivityTest extends ActivityInstrumentationTestCase2<PaintListActivity> {
     private PaintListActivity mActivity;
+    private Spinner mRangesSpinner;
+    private ListView mPaintListView;
 
     public PaintListActivityTest() {
         super(PaintListActivity.class);
@@ -17,6 +21,8 @@ public class PaintListActivityTest extends ActivityInstrumentationTestCase2<Pain
     protected void setUp() throws Exception {
         super.setUp();
         mActivity = getActivity();
+        mRangesSpinner = (Spinner)mActivity.findViewById(R.id.ranges_spinner);
+        mPaintListView = (ListView)mActivity.findViewById(R.id.paint_list);
     }
 
     public void testBrandSpinner() {
@@ -24,6 +30,12 @@ public class PaintListActivityTest extends ActivityInstrumentationTestCase2<Pain
         assertTrue(brandsSpinner.getCount() > 0);
         String firstItem = (String)brandsSpinner.getItemAtPosition(0);
         assertTrue(mActivity.getString(R.string.brand).equals(firstItem));
+    }
+
+    public void testRangesSpinner() {
+        assertTrue(mRangesSpinner.getCount() > 0);
+        String firstItem = (String)mRangesSpinner.getItemAtPosition(0);
+        assertTrue(mActivity.getString(R.string.range).equals(firstItem));
     }
 
     public void testPaintStatusSpinner() {

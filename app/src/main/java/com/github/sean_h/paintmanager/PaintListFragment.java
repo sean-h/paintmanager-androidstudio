@@ -7,10 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -34,11 +36,13 @@ public class PaintListFragment extends Fragment {
 
     private ListView mPaintList;
     private final List<String> mPaintNames;
+    private ArrayAdapter<String> paintListAdapter;
 
     private Spinner mBrandSpinner;
     private final List<String> mBrandNames;
     private Spinner mRangeSpinner;
     private final List<String> mRangeNames;
+    private Range mRangeFilter;
     private Spinner mStatusSpinner;
     private final List<String> mStatusNames;
     private OnFragmentInteractionListener mListener;
@@ -75,12 +79,7 @@ public class PaintListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_paint_list, container, false);
 
         mPaintList = (ListView) rootView.findViewById(R.id.paint_list);
-        mPaintList.setAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                mPaintNames
-        ));
+        mPaintList.setAdapter(paintListAdapter);
 
         mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
         mBrandSpinner.setAdapter(new ArrayAdapter<>(
@@ -97,6 +96,25 @@ public class PaintListFragment extends Fragment {
                 android.R.id.text1,
                 mRangeNames
         ));
+        mRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    String rangeName = (String) mRangeSpinner.getItemAtPosition(position);
+                    mRangeFilter = Select.from(Range.class)
+                            .where(Condition.prop("name").eq(rangeName))
+                            .first();
+                    loadPaintList();
+                } else {
+                    mRangeFilter = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mStatusSpinner = (Spinner) rootView.findViewById(R.id.statuses_spinner);
         mStatusSpinner.setAdapter(new ArrayAdapter<>(
@@ -122,11 +140,13 @@ public class PaintListFragment extends Fragment {
 
         ((PaintListActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 
-        mPaintNames.clear();
-        List<Paint> paints = Select.from(Paint.class).orderBy("name").list();
-        for (Paint p : paints) {
-            mPaintNames.add(p.name);
-        }
+        paintListAdapter = new ArrayAdapter<>(
+                getActivity(),
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                mPaintNames);
+
+        loadPaintList();
 
         mBrandNames.clear();
         List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
@@ -169,6 +189,22 @@ public class PaintListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void loadPaintList() {
+        mPaintNames.clear();
+
+        Select<Paint> query = Select.from(Paint.class);
+
+        if (mRangeFilter != null) {
+            query = query.where(Condition.prop("range").eq(mRangeFilter.getId()));
+        }
+
+        List<Paint> paints = query.orderBy("name").list();
+        for (Paint p : paints) {
+            mPaintNames.add(p.name);
+        }
+        paintListAdapter.notifyDataSetChanged();
     }
 
 }
