@@ -34,9 +34,9 @@ public class PaintListFragment extends Fragment {
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private ListView mPaintList;
-    private final List<String> mPaintNames;
-    private ArrayAdapter<String> paintListAdapter;
+    private ListView mPaintListView;
+    private List<Paint> mPaints;
+    private PaintListAdapter mPaintListAdapter;
 
     private Spinner mBrandSpinner;
     private final List<String> mBrandNames;
@@ -62,10 +62,10 @@ public class PaintListFragment extends Fragment {
     }
 
     public PaintListFragment() {
-        mPaintNames = new ArrayList<>();
         mBrandNames = new ArrayList<>();
         mRangeNames = new ArrayList<>();
         mStatusNames = new ArrayList<>();
+        mPaints = new ArrayList<>();
     }
 
     @Override
@@ -78,8 +78,8 @@ public class PaintListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_paint_list, container, false);
 
-        mPaintList = (ListView) rootView.findViewById(R.id.paint_list);
-        mPaintList.setAdapter(paintListAdapter);
+        mPaintListView = (ListView) rootView.findViewById(R.id.paint_list);
+        mPaintListView.setAdapter(mPaintListAdapter);
 
         mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
         mBrandSpinner.setAdapter(new ArrayAdapter<>(
@@ -140,12 +140,7 @@ public class PaintListFragment extends Fragment {
 
         ((PaintListActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 
-        paintListAdapter = new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                mPaintNames);
-
+        mPaintListAdapter = new PaintListAdapter(getActivity(), mPaints);
         loadPaintList();
 
         mBrandNames.clear();
@@ -192,19 +187,15 @@ public class PaintListFragment extends Fragment {
     }
 
     private void loadPaintList() {
-        mPaintNames.clear();
-
         Select<Paint> query = Select.from(Paint.class);
-
         if (mRangeFilter != null) {
             query = query.where(Condition.prop("range").eq(mRangeFilter.getId()));
         }
-
         List<Paint> paints = query.orderBy("name").list();
-        for (Paint p : paints) {
-            mPaintNames.add(p.name);
-        }
-        paintListAdapter.notifyDataSetChanged();
+
+        mPaints.clear();
+        mPaints.addAll(paints);
+        mPaintListAdapter.notifyDataSetChanged();
     }
 
 }
