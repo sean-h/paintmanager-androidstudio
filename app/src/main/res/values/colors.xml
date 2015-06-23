@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="have_selected">#11CC11</color>
+    <color name="have_pressed">#2D882D</color>
+</resources>

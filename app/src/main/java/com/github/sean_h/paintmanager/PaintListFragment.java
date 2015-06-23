@@ -145,21 +145,21 @@ public class PaintListFragment extends Fragment {
 
         mBrandNames.clear();
         List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
-        mBrandNames.add(getString(R.string.brand));
+        mBrandNames.add(getString(R.string.brand_spinner_default));
         for (Brand b : brands) {
             mBrandNames.add(b.name);
         }
 
         mRangeNames.clear();
         List<Range> ranges = Select.from(Range.class).orderBy("name").list();
-        mRangeNames.add(getString(R.string.range));
+        mRangeNames.add(getString(R.string.range_spinner_default));
         for (Range r : ranges) {
             mRangeNames.add(r.name);
         }
 
         mStatusNames.clear();
         List<PaintStatus> statuses = Select.from(PaintStatus.class).orderBy("name").list();
-        mStatusNames.add(getString(R.string.status));
+        mStatusNames.add(getString(R.string.status_spinner_default));
         for (PaintStatus s : statuses) {
             mStatusNames.add(s.name);
         }

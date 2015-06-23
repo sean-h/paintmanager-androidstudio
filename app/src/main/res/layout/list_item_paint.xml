@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -12,5 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textSize="32sp"
-        android:paddingLeft="8sp"/>
-</LinearLayout>
+        android:paddingStart="8sp"
+        android:paddingEnd="8sp"
+        android:layout_toEndOf="@id/paint_color"/>
+    <Button
+        android:id="@+id/have_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/have"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/have_button"/>
+</RelativeLayout>

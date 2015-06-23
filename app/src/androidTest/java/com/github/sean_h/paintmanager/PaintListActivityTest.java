@@ -1,7 +1,6 @@
 package com.github.sean_h.paintmanager;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -29,13 +28,13 @@ public class PaintListActivityTest extends ActivityInstrumentationTestCase2<Pain
         Spinner brandsSpinner = (Spinner) mActivity.findViewById(R.id.brands_spinner);
         assertTrue(brandsSpinner.getCount() > 0);
         String firstItem = (String)brandsSpinner.getItemAtPosition(0);
-        assertTrue(mActivity.getString(R.string.brand).equals(firstItem));
+        assertTrue(mActivity.getString(R.string.brand_spinner_default).equals(firstItem));
     }
 
     public void testRangesSpinner() {
         assertTrue(mRangesSpinner.getCount() > 0);
         String firstItem = (String)mRangesSpinner.getItemAtPosition(0);
-        assertTrue(mActivity.getString(R.string.range).equals(firstItem));
+        assertTrue(mActivity.getString(R.string.range_spinner_default).equals(firstItem));
     }
 
     public void testPaintStatusSpinner() {
@@ -43,7 +42,7 @@ public class PaintListActivityTest extends ActivityInstrumentationTestCase2<Pain
         assertTrue(statusSpinner.getCount() > 0);
 
         String firstItem = (String)statusSpinner.getItemAtPosition(0);
-        assertTrue(mActivity.getString(R.string.status).equals(firstItem));
+        assertTrue(mActivity.getString(R.string.status_spinner_default).equals(firstItem));
 
         List<String> statuses = new ArrayList<>();
         for (int i = 0; i < statusSpinner.getCount(); i++) {
