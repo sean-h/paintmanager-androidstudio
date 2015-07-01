@@ -36,6 +36,10 @@ public class PaintListAdapter extends ArrayAdapter<Paint> {
         paintColor.setImageBitmap(paint.getColorBitmap(50, 50));
 
         Button haveButton = (Button)convertView.findViewById(R.id.have_button);
+        PaintStatus haveStatus = Select.from(PaintStatus.class)
+                                       .where(Condition.prop("name").eq("Have"))
+                                       .first();
+        haveButton.setOnClickListener(new PaintStatusOnClickListener(paint, haveStatus));
         if (paint.status.getId() == Select.from(PaintStatus.class)
                                           .where(Condition.prop("name").eq("Have")).first().getId())
         {
