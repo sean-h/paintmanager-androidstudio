@@ -104,10 +104,10 @@ public class PaintListFragment extends Fragment {
                     mRangeFilter = Select.from(Range.class)
                             .where(Condition.prop("name").eq(rangeName))
                             .first();
-                    loadPaintList();
                 } else {
                     mRangeFilter = null;
                 }
+                loadPaintList();
             }
 
             @Override
