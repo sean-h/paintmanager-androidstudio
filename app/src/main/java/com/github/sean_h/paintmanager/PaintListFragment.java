@@ -45,6 +45,7 @@ public class PaintListFragment extends Fragment {
     private Range mRangeFilter;
     private Spinner mStatusSpinner;
     private final List<String> mStatusNames;
+    private PaintStatus mStatusFilter;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -123,6 +124,25 @@ public class PaintListFragment extends Fragment {
                 android.R.id.text1,
                 mStatusNames
         ));
+        mStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    String statusName = (String) mStatusSpinner.getItemAtPosition(position);
+                    mStatusFilter = Select.from(PaintStatus.class)
+                            .where(Condition.prop("name").eq(statusName))
+                            .first();
+                } else {
+                    mStatusFilter = null;
+                }
+                loadPaintList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return rootView;
     }
@@ -191,6 +211,10 @@ public class PaintListFragment extends Fragment {
         if (mRangeFilter != null) {
             query = query.where(Condition.prop("range").eq(mRangeFilter.getId()));
         }
+        if (mStatusFilter != null) {
+            query = query.where(Condition.prop("status").eq(mStatusFilter.getId()));
+        }
+
         List<Paint> paints = query.orderBy("name").list();
 
         mPaints.clear();
