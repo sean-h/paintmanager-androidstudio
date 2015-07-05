@@ -25,8 +25,7 @@ public class PaintStatusOnClickListener implements View.OnClickListener {
             }
         }
 
-        mPaint.status = mStatus;
-        mPaint.save();
+        mPaint.setStatus(mStatus);
         v.setEnabled(false);
     }
 }

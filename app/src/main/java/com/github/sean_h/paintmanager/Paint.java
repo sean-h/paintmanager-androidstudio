@@ -5,11 +5,14 @@ import android.graphics.Color;
 
 import com.orm.SugarRecord;
 
+import java.util.Date;
+
 class Paint extends SugarRecord<Paint> {
     String name;
     Range range;
     PaintStatus status;
     String colorCode;
+    Date updatedAt;
 
     public Paint() {
 
@@ -24,6 +27,7 @@ class Paint extends SugarRecord<Paint> {
         this.range = range;
         this.status = status;
         this.colorCode = colorCode;
+        this.updatedAt = new Date();
     }
 
     public Bitmap getColorBitmap(int width, int height) {
@@ -34,5 +38,11 @@ class Paint extends SugarRecord<Paint> {
         }
         Bitmap bm = Bitmap.createBitmap(colors, width, height, Bitmap.Config.ARGB_8888);
         return bm;
+    }
+
+    public void setStatus(PaintStatus status) {
+        this.status = status;
+        this.updatedAt = new Date();
+        this.save();
     }
 }
