@@ -17,4 +17,6 @@
     <string name="status_spinner_default">--- Status ---</string>
     <string name="paint_list_title">Paint List</string>
     <string name="have">Have</string>
+    <string name="dont_have">Don\'t Have</string>
+    <string name="need">Need</string>
 </resources>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="have_selected">#11CC11</color>
-    <color name="have_pressed">#2D882D</color>
+    <color name="have_selected">#00C853</color>
+    <color name="have_pressed">#A5D6A7</color>
+    <color name="dont_have_selected">#3F51B5</color>
+    <color name="dont_have_pressed">#C5CAE9</color>
+    <color name="need_selected">#F44336</color>
+    <color name="need_pressed">#EF9A9A</color>
+    <color name="unselected">#333333</color>
 </resources>

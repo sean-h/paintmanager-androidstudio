@@ -18,12 +18,15 @@ public class PaintStatusOnClickListener implements View.OnClickListener {
         ViewGroup parent = (ViewGroup)v.getParent();
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if (child.getId() == R.id.have_button) {
+            if (child.getId() == R.id.have_button
+                    || child.getId() == R.id.dont_have_button
+                    || child.getId() == R.id.need_button) {
                 child.setEnabled(true);
             }
         }
 
         mPaint.status = mStatus;
+        mPaint.save();
         v.setEnabled(false);
     }
 }
