@@ -52,15 +52,10 @@ class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void LoadDatabaseFixtures() {
-        PaintStatus.deleteAll(PaintStatus.class);
-        PaintStatus dontHave = new PaintStatus("Don't Have");
-        dontHave.save();
-        PaintStatus outOf = new PaintStatus("Out Of");
-        outOf.save();
-        PaintStatus need = new PaintStatus("Need");
-        need.save();
-        PaintStatus have = new PaintStatus("Have");
-        have.save();
+        Paint.PaintStatus dontHave = Paint.PaintStatus.dontHave;
+        Paint.PaintStatus outOf = Paint.PaintStatus.outOf;
+        Paint.PaintStatus need = Paint.PaintStatus.need;
+        Paint.PaintStatus have = Paint.PaintStatus.have;
 
         Brand.deleteAll(Brand.class);
         Brand basicColors = new Brand(1, "Basic Colors");

@@ -45,7 +45,7 @@ public class PaintListFragment extends Fragment {
     private Range mRangeFilter;
     private Spinner mStatusSpinner;
     private final List<String> mStatusNames;
-    private PaintStatus mStatusFilter;
+    private Paint.PaintStatus mStatusFilter;
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -129,9 +129,11 @@ public class PaintListFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     String statusName = (String) mStatusSpinner.getItemAtPosition(position);
-                    mStatusFilter = Select.from(PaintStatus.class)
-                            .where(Condition.prop("name").eq(statusName))
-                            .first();
+                    try {
+                        mStatusFilter = Paint.getStatusIdFromName(statusName, getActivity());
+                    } catch (IllegalArgumentException ex) {
+                        mStatusFilter = null;
+                    }
                 } else {
                     mStatusFilter = null;
                 }
@@ -178,11 +180,10 @@ public class PaintListFragment extends Fragment {
         }
 
         mStatusNames.clear();
-        List<PaintStatus> statuses = Select.from(PaintStatus.class).orderBy("name").list();
         mStatusNames.add(getString(R.string.status_spinner_default));
-        for (PaintStatus s : statuses) {
-            mStatusNames.add(s.name);
-        }
+        mStatusNames.add(getString(R.string.dont_have));
+        mStatusNames.add(getString(R.string.have));
+        mStatusNames.add(getString(R.string.need));
     }
 
     @Override
@@ -212,7 +213,7 @@ public class PaintListFragment extends Fragment {
             query = query.where(Condition.prop("range").eq(mRangeFilter.getId()));
         }
         if (mStatusFilter != null) {
-            query = query.where(Condition.prop("status").eq(mStatusFilter.getId()));
+            query = query.where(Condition.prop("status").eq(mStatusFilter));
         }
 
         List<Paint> paints = query.orderBy("name").list();

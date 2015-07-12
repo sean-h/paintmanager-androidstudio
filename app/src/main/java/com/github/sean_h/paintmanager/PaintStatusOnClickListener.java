@@ -5,9 +5,9 @@ import android.view.ViewGroup;
 
 public class PaintStatusOnClickListener implements View.OnClickListener {
     private Paint mPaint;
-    private PaintStatus mStatus;
+    private Paint.PaintStatus mStatus;
 
-    public PaintStatusOnClickListener(Paint paint, PaintStatus status) {
+    public PaintStatusOnClickListener(Paint paint, Paint.PaintStatus status) {
         mPaint = paint;
         mStatus = status;
     }

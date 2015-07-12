@@ -36,29 +36,20 @@ public class PaintListAdapter extends ArrayAdapter<Paint> {
         paintColor.setImageBitmap(paint.getColorBitmap(50, 50));
 
         Button haveButton = (Button)convertView.findViewById(R.id.have_button);
-        PaintStatus haveStatus = Select.from(PaintStatus.class)
-                .where(Condition.prop("name").eq("Have"))
-                .first();
-        setupButton(haveButton, paint, haveStatus);
+        setupButton(haveButton, paint, Paint.PaintStatus.have);
 
         Button dontHaveButton = (Button)convertView.findViewById(R.id.dont_have_button);
-        PaintStatus dontHaveStatus = Select.from(PaintStatus.class)
-                .where(Condition.prop("name").eq("Don't Have"))
-                .first();
-        setupButton(dontHaveButton, paint, dontHaveStatus);
+        setupButton(dontHaveButton, paint, Paint.PaintStatus.dontHave);
 
         Button needButton = (Button)convertView.findViewById(R.id.need_button);
-        PaintStatus needStatus = Select.from(PaintStatus.class)
-                .where(Condition.prop("name").eq("Need"))
-                .first();
-        setupButton(needButton, paint, needStatus);
+        setupButton(needButton, paint, Paint.PaintStatus.need);
 
         return convertView;
     }
 
-    private void setupButton(Button button, Paint paint, PaintStatus paintStatus) {
+    private void setupButton(Button button, Paint paint, Paint.PaintStatus paintStatus) {
         button.setOnClickListener(new PaintStatusOnClickListener(paint, paintStatus));
-        if (paint.status.getId().longValue() == paintStatus.getId().longValue()) {
+        if (paint.status == paintStatus) {
             button.setEnabled(false);
         } else {
             button.setEnabled(true);

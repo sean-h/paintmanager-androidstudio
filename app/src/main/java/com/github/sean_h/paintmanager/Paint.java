@@ -1,5 +1,6 @@
 package com.github.sean_h.paintmanager;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
@@ -11,9 +12,22 @@ class Paint extends SugarRecord<Paint> {
     long guid;
     String name;
     Range range;
-    PaintStatus status;
     String colorCode;
     Date updatedAt;
+
+    enum PaintStatus {
+        have(0), dontHave(1), need(2), outOf(3);
+
+        private int value;
+        PaintStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+    }
+    PaintStatus status;
 
     public Paint() {
 
@@ -46,5 +60,32 @@ class Paint extends SugarRecord<Paint> {
         this.status = status;
         this.updatedAt = new Date();
         this.save();
+    }
+
+    public static PaintStatus getStatusIdFromName(int statusName)
+            throws IllegalArgumentException {
+        switch (statusName) {
+            case R.string.have:
+                return PaintStatus.have;
+            case R.string.dont_have:
+                return PaintStatus.dontHave;
+            case R.string.need:
+                return PaintStatus.need;
+            default:
+                throw new IllegalArgumentException("Status Name is not a valid status");
+        }
+    }
+
+    public static PaintStatus getStatusIdFromName(String statusName, Activity activity)
+            throws IllegalArgumentException {
+        if (statusName == activity.getString(R.string.have)) {
+            return PaintStatus.have;
+        } else if (statusName == activity.getString(R.string.dont_have)) {
+            return PaintStatus.dontHave;
+        } else if (statusName == activity.getString(R.string.need)) {
+            return PaintStatus.need;
+        }
+
+        throw new IllegalArgumentException("Status Name is not a valid status");
     }
 }
