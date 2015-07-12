@@ -7,15 +7,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-public class PaintListActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
+public class PaintListActivity extends ActionBarActivity {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -26,30 +20,15 @@ public class PaintListActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paint_list);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, PaintListFragment.newInstance(1))
+                .commit();
 
         DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
         dbSyncTask.doInBackground();
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        switch (position) {
-            case 0:
-                fragmentManager.beginTransaction()
-                    .replace(R.id.container, PaintListFragment.newInstance(position + 1))
-                    .commit();
-                break;
-        }
     }
 
     public void onSectionAttached(int number) {
@@ -76,15 +55,9 @@ public class PaintListActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.paint_list, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.paint_list, menu);
+        restoreActionBar();
+        return true;
     }
 
     @Override
@@ -96,6 +69,11 @@ public class PaintListActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (item.getItemId() == R.id.sync_button) {
+            Toast.makeText(this, "Sync", Toast.LENGTH_SHORT).show();
             return true;
         }
 
