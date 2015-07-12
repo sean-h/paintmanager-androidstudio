@@ -8,6 +8,7 @@ import com.orm.SugarRecord;
 import java.util.Date;
 
 class Paint extends SugarRecord<Paint> {
+    long guid;
     String name;
     Range range;
     PaintStatus status;
@@ -22,7 +23,8 @@ class Paint extends SugarRecord<Paint> {
         this.name = name;
     }
 
-    public Paint(String name, Range range, PaintStatus status, String colorCode) {
+    public Paint(long guid, String name, Range range, PaintStatus status, String colorCode) {
+        this.guid = guid;
         this.name = name;
         this.range = range;
         this.status = status;

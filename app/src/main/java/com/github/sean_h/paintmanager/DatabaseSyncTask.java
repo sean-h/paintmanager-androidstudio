@@ -63,21 +63,21 @@ class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
         have.save();
 
         Brand.deleteAll(Brand.class);
-        Brand basicColors = new Brand("Basic Colors");
+        Brand basicColors = new Brand(1, "Basic Colors");
         basicColors.save();
 
         Range.deleteAll(Range.class);
-        Range primaryColors = new Range("Primary Colors", basicColors);
+        Range primaryColors = new Range(1, "Primary Colors", basicColors);
         primaryColors.save();
-        Range secondaryColors = new Range("Secondary Colors", basicColors);
+        Range secondaryColors = new Range(2, "Secondary Colors", basicColors);
         secondaryColors.save();
 
         Paint.deleteAll(Paint.class);
-        new Paint("Red", primaryColors, have, "#ff0000").save();
-        new Paint("Blue", primaryColors, dontHave, "#0000ff").save();
-        new Paint("Yellow", primaryColors, dontHave, "#ffff00").save();
-        new Paint("Green", secondaryColors, need, "#00ff00").save();
-        new Paint("White", secondaryColors, dontHave, "#ffffff").save();
-        new Paint("Black", secondaryColors, dontHave, "#000000").save();
+        new Paint(1, "Red", primaryColors, have, "#ff0000").save();
+        new Paint(2, "Blue", primaryColors, dontHave, "#0000ff").save();
+        new Paint(3, "Yellow", primaryColors, dontHave, "#ffff00").save();
+        new Paint(4, "Green", secondaryColors, need, "#00ff00").save();
+        new Paint(5, "White", secondaryColors, dontHave, "#ffffff").save();
+        new Paint(6, "Black", secondaryColors, dontHave, "#000000").save();
     }
 }
