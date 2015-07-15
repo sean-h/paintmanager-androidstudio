@@ -4,14 +4,18 @@ import com.orm.SugarRecord;
 
 import java.util.Date;
 
-public class SyncLog extends SugarRecord<SyncLog> {
-    private Date syncTime;
-    private boolean wasSuccessful;
+class SyncLog extends SugarRecord<SyncLog> {
+    Date syncTime;
+    boolean wasSuccessful;
 
     public SyncLog() { }
 
     public SyncLog(Date syncTime, boolean wasSuccessful) {
         this.syncTime = syncTime;
         this.wasSuccessful = wasSuccessful;
+    }
+
+    public Date getSyncTime() {
+        return this.syncTime;
     }
 }

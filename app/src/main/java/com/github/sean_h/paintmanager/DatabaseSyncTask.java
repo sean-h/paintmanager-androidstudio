@@ -4,12 +4,15 @@ import android.os.AsyncTask;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
@@ -74,5 +77,23 @@ class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
         new Paint(4, "Green", secondaryColors, need, "#00ff00").save();
         new Paint(5, "White", secondaryColors, dontHave, "#ffffff").save();
         new Paint(6, "Black", secondaryColors, dontHave, "#000000").save();
+    }
+
+    public static List<Paint> getUpdatedPaints() {
+        SyncLog lastSync = Select.from(SyncLog.class)
+                .where(Condition.prop("was_successful").eq(true))
+                .orderBy("sync_time DESC")
+                .first();
+
+        Date lastSuccessfulSyncTime;
+        if (lastSync == null) {
+            lastSuccessfulSyncTime = new Date(1900, 1, 1);
+        } else {
+            lastSuccessfulSyncTime = lastSync.getSyncTime();
+        }
+
+        return Select.from(Paint.class)
+                .where(Condition.prop("updated_at").gt(lastSuccessfulSyncTime))
+                .list();
     }
 }
