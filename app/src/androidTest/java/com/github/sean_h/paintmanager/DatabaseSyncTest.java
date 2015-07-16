@@ -1,13 +1,20 @@
 package com.github.sean_h.paintmanager;
 
-import android.test.AndroidTestCase;
+import android.test.InstrumentationTestCase;
 
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
-public class DatabaseSyncTest extends AndroidTestCase {
+public class DatabaseSyncTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -22,5 +29,29 @@ public class DatabaseSyncTest extends AndroidTestCase {
         assert(updatedPaints.contains(redPaint));
     }
 
-    
+    public void testLoadSyncData() throws IOException, JSONException {
+        InputStream open = getInstrumentation().getContext()
+                         .getResources().getAssets().open("sync_data.json");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(open));
+
+        StringBuilder inputStringBuilder = new StringBuilder();
+
+        String inputString;
+        while ((inputString = br.readLine()) != null)
+            inputStringBuilder.append(inputString);
+
+        JSONObject jsonObject = new JSONObject(inputStringBuilder.toString());
+        open.close();
+
+        Paint.deleteAll(Paint.class);
+        List<Paint> paints = Select.from(Paint.class).list();
+        assertEquals(0, paints.size());
+
+        DatabaseSyncHelper dbHelper = new DatabaseSyncHelper();
+        dbHelper.updateFromJSON(jsonObject);
+
+        paints = Select.from(Paint.class).list();
+        assertTrue(paints.size() > 0);
+    }
 }

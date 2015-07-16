@@ -1,0 +1,14 @@
+{
+    "brand":
+      [{"id": 1, "name": "Simple Colors"}],
+    "paint_range":
+      [{"id": 1, "name": "Primary Colors", "brand_id": 1},
+       {"id": 2, "name": "Secondary Colors", "brand_id": 1}],
+    "paint":
+      [{"id": 1, "name": "Red", "color": "#FF0000", "range_id": 1, "status": 0, "updated_at": "2015-01-20T01:12:33.582Z"},
+       {"id": 2, "name": "Blue", "color": "#0000ff", "range_id": 1, "status": 1, "updated_at": "2015-01-20T01:12:33.582Z"},
+       {"id": 3, "name": "Yellow", "color": "#ffff00", "range_id": 1, "status": 1, "updated_at": "2015-01-20T01:12:33.582Z"},
+       {"id": 4, "name": "Green", "color": "#00ff00", "range_id": 2, "status": 2, "updated_at": "2015-01-20T01:12:33.582Z"},
+       {"id": 5, "name": "White", "color": "#ffffff", "range_id": 2, "status": 1, "updated_at": "2015-01-20T01:12:33.582Z"},
+       {"id": 6, "name": "Black", "color": "#000000", "range_id": 2, "status": 1, "updated_at": "2015-01-20T01:12:33.582Z"}]
+}

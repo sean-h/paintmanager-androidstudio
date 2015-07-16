@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.Date;
 
@@ -56,8 +58,27 @@ class Paint extends SugarRecord<Paint> {
         return bm;
     }
 
+    public void setRange(int rangeId) {
+        Range range = Select.from(Range.class).where(Condition.prop("guid").eq(rangeId)).first();
+        this.range = range;
+        this.updatedAt = new Date();
+        this.save();
+    }
+
     public void setStatus(PaintStatus status) {
         this.status = status;
+        this.updatedAt = new Date();
+        this.save();
+    }
+
+    public void setStatus(int status) {
+        this.status = PaintStatus.values()[status];
+        this.updatedAt = new Date();
+        this.save();
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
         this.updatedAt = new Date();
         this.save();
     }
