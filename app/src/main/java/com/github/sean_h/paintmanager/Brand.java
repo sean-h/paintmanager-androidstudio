@@ -14,4 +14,9 @@ class Brand extends SugarRecord<Brand> {
         this.guid = guid;
         this.name = name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+        this.save();
+    }
 }

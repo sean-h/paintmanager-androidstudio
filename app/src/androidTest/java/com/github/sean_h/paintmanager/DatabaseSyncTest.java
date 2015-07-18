@@ -26,7 +26,7 @@ public class DatabaseSyncTest extends InstrumentationTestCase {
         Paint redPaint = Select.from(Paint.class).where(Condition.prop("name").eq("Red")).first();
         redPaint.setStatus(Paint.PaintStatus.need);
         List<Paint> updatedPaints = DatabaseSyncTask.getUpdatedPaints();
-        assert(updatedPaints.contains(redPaint));
+        assertTrue(updatedPaints.contains(redPaint));
     }
 
     public void testLoadSyncData() throws IOException, JSONException {
@@ -44,14 +44,15 @@ public class DatabaseSyncTest extends InstrumentationTestCase {
         JSONObject jsonObject = new JSONObject(inputStringBuilder.toString());
         open.close();
 
+        Brand.deleteAll(Brand.class);
+        Range.deleteAll(Range.class);
         Paint.deleteAll(Paint.class);
-        List<Paint> paints = Select.from(Paint.class).list();
-        assertEquals(0, paints.size());
 
         DatabaseSyncHelper dbHelper = new DatabaseSyncHelper();
         dbHelper.updateFromJSON(jsonObject);
 
-        paints = Select.from(Paint.class).list();
-        assertTrue(paints.size() > 0);
+        assertTrue(Select.from(Brand.class).count() > 0);
+        assertTrue(Select.from(Range.class).count() > 0);
+        assertTrue(Select.from(Paint.class).count() > 0);
     }
 }

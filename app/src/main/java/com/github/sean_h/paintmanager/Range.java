@@ -1,6 +1,8 @@
 package com.github.sean_h.paintmanager;
 
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 class Range extends SugarRecord<Range> {
     long guid;
@@ -13,5 +15,17 @@ class Range extends SugarRecord<Range> {
         this.guid = guid;
         this.name = name;
         this.brand = brand;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.save();
+    }
+
+    public void setBrand(long brandId) {
+        this.brand = Select.from(Brand.class)
+                .where(Condition.prop("guid").eq(brandId))
+                .first();
+        this.save();
     }
 }
