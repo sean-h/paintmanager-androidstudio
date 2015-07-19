@@ -28,7 +28,7 @@ public class PaintListActivity extends ActionBarActivity {
                 .commit();
 
         DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
-        dbSyncTask.doInBackground();
+        dbSyncTask.execute();
     }
 
     public void onSectionAttached(int number) {
@@ -88,6 +88,6 @@ public class PaintListActivity extends ActionBarActivity {
                 + "auth="
                 + auth_token;
         DatabaseSyncTask syncTask = new DatabaseSyncTask();
-        syncTask.doInBackground(syncUrl);
+        syncTask.execute(syncUrl);
     }
 }
