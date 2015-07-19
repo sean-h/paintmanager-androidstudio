@@ -27,7 +27,7 @@ import java.util.List;
  * Use the {@link PaintListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PaintListFragment extends Fragment {
+public class PaintListFragment extends Fragment implements OnTaskCompleted {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -165,25 +165,7 @@ public class PaintListFragment extends Fragment {
         mPaintListAdapter = new PaintListAdapter(getActivity(), mPaints);
         loadPaintList();
 
-        mBrandNames.clear();
-        List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
-        mBrandNames.add(getString(R.string.brand_spinner_default));
-        for (Brand b : brands) {
-            mBrandNames.add(b.name);
-        }
-
-        mRangeNames.clear();
-        List<Range> ranges = Select.from(Range.class).orderBy("name").list();
-        mRangeNames.add(getString(R.string.range_spinner_default));
-        for (Range r : ranges) {
-            mRangeNames.add(r.name);
-        }
-
-        mStatusNames.clear();
-        mStatusNames.add(getString(R.string.status_spinner_default));
-        mStatusNames.add(getString(R.string.dont_have));
-        mStatusNames.add(getString(R.string.have));
-        mStatusNames.add(getString(R.string.need));
+        loadSpinners();
     }
 
     @Override
@@ -223,4 +205,31 @@ public class PaintListFragment extends Fragment {
         mPaintListAdapter.notifyDataSetChanged();
     }
 
+    private void loadSpinners() {
+        mBrandNames.clear();
+        List<Brand> brands = Select.from(Brand.class).orderBy("name").list();
+        mBrandNames.add(getString(R.string.brand_spinner_default));
+        for (Brand b : brands) {
+            mBrandNames.add(b.name);
+        }
+
+        mRangeNames.clear();
+        List<Range> ranges = Select.from(Range.class).orderBy("name").list();
+        mRangeNames.add(getString(R.string.range_spinner_default));
+        for (Range r : ranges) {
+            mRangeNames.add(r.name);
+        }
+
+        mStatusNames.clear();
+        mStatusNames.add(getString(R.string.status_spinner_default));
+        mStatusNames.add(getString(R.string.dont_have));
+        mStatusNames.add(getString(R.string.have));
+        mStatusNames.add(getString(R.string.need));
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        loadSpinners();
+        loadPaintList();
+    }
 }

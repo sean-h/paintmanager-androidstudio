@@ -2,18 +2,18 @@ package com.github.sean_h.paintmanager;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class PaintListActivity extends ActionBarActivity {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    private PaintListFragment mPaintListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,15 @@ public class PaintListActivity extends ActionBarActivity {
 
         mTitle = getTitle();
 
+        mPaintListFragment = PaintListFragment.newInstance(1);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PaintListFragment.newInstance(1))
+                .replace(R.id.container, mPaintListFragment)
                 .commit();
 
         DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
+        dbSyncTask.addTaskCompleteListener(mPaintListFragment);
         dbSyncTask.execute();
     }
 
@@ -88,6 +91,7 @@ public class PaintListActivity extends ActionBarActivity {
                 + "auth="
                 + auth_token;
         DatabaseSyncTask syncTask = new DatabaseSyncTask();
+        syncTask.addTaskCompleteListener(mPaintListFragment);
         syncTask.execute(syncUrl);
     }
 }
