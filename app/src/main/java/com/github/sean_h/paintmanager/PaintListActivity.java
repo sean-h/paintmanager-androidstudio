@@ -81,7 +81,13 @@ public class PaintListActivity extends ActionBarActivity {
     }
 
     private void databaseSync() {
+        String auth_token = this.getSharedPreferences("com.github.sean_h.paintmanager", MODE_PRIVATE)
+                .getString("auth_token", "");
+        String syncUrl = getString(R.string.api_url)
+                + getString(R.string.sync_json_url)
+                + "auth="
+                + auth_token;
         DatabaseSyncTask syncTask = new DatabaseSyncTask();
-        syncTask.doInBackground("/");
+        syncTask.doInBackground(syncUrl);
     }
 }

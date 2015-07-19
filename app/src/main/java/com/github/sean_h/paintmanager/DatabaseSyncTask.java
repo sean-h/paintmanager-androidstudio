@@ -1,16 +1,11 @@
 package com.github.sean_h.paintmanager;
 
 import android.os.AsyncTask;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
 
 class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
     @Override
@@ -29,30 +24,20 @@ class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
     private void SyncFromRemoteDatabase(String syncUrl) {
         Paint.deleteAll(Paint.class);
 
+        String baseSyncUrl = syncUrl.split("auth=")[0];
+        String auth_token = syncUrl.split("auth=")[1];
+
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(syncUrl, new JsonHttpResponseHandler() {
+        client.addHeader("AUTHORIZATION", auth_token);
+        client.get(baseSyncUrl, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-
-                List<Paint> paints = new ArrayList<>();
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        String paintName = response.getJSONObject(i).getString("name");
-                        paints.add(new Paint(paintName));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    // Only take the first 10 elements
-                    if (i == 10) {
-                        break;
-                    }
-                }
-
-                Paint.saveInTx(paints);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                DatabaseSyncHelper dbSyncHelper = new DatabaseSyncHelper();
+                dbSyncHelper.updateFromJSON(response);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
             }
         });

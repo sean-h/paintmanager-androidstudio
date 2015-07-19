@@ -67,6 +67,10 @@ public class LoginActivity extends Activity {
         mProgressView = findViewById(R.id.login_progress);
 
         mPreferences = this.getSharedPreferences("com.github.sean_h.paintmanager", MODE_PRIVATE);
+
+        if (!mPreferences.getString("auth_token", "").equals("")) {
+            startPaintListActivity();
+        }
     }
 
     /**
