@@ -73,10 +73,15 @@ public class PaintListActivity extends ActionBarActivity {
         }
 
         if (item.getItemId() == R.id.sync_button) {
-            Toast.makeText(this, "Sync", Toast.LENGTH_SHORT).show();
+            databaseSync();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void databaseSync() {
+        DatabaseSyncTask syncTask = new DatabaseSyncTask();
+        syncTask.doInBackground("/");
     }
 }

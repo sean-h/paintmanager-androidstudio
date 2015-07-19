@@ -15,10 +15,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
+class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
     @Override
-    protected Void doInBackground(Void... params) {
-        LoadDatabaseFixtures();
+    protected Void doInBackground(String... syncUrls) {
+        for (int i = 0; i < syncUrls.length; i++) {
+            String url = syncUrls[i];
+            if (url.contains("http://")) {
+                SyncFromRemoteDatabase(url);
+            } else {
+                LoadDatabaseFixtures();
+            }
+        }
         return null;
     }
 
