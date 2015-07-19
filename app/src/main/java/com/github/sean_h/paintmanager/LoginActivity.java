@@ -119,8 +119,9 @@ public class LoginActivity extends Activity {
             requestParams.put("email", email);
             requestParams.put("password", password);
 
+            String loginUrl = getString(R.string.api_url) + getString(R.string.login_url);
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post("http://192.168.1.166:4567/login", requestParams, new JsonHttpResponseHandler() {
+            client.post(loginUrl, requestParams, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     if (response.has("error")) {

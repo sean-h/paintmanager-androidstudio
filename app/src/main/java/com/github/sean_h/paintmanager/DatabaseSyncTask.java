@@ -22,11 +22,11 @@ class DatabaseSyncTask extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private void SyncFromRemoteDatabase() {
+    private void SyncFromRemoteDatabase(String syncUrl) {
         Paint.deleteAll(Paint.class);
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.166:4567/paints.json", new JsonHttpResponseHandler() {
+        client.get(syncUrl, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
