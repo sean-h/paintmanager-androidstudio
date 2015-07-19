@@ -28,4 +28,12 @@ class Range extends SugarRecord<Range> {
                 .first();
         this.save();
     }
+
+    public void setGuid(long guid) {
+        this.guid = guid;
+    }
+
+    public long getGuid() {
+        return guid;
+    }
 }

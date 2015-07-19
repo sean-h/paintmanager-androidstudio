@@ -73,6 +73,7 @@ public class DatabaseSyncHelper {
                 r = new Range();
             }
 
+            r.setGuid(rangeId);
             r.setName(range.getString("name"));
             r.setBrand(range.getInt("brand_id"));
         }

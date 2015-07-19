@@ -192,7 +192,7 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
     private void loadPaintList() {
         Select<Paint> query = Select.from(Paint.class);
         if (mRangeFilter != null) {
-            query = query.where(Condition.prop("range").eq(mRangeFilter.getId()));
+            query = query.where(Condition.prop("range").eq(mRangeFilter.getGuid()));
         }
         if (mStatusFilter != null) {
             query = query.where(Condition.prop("status").eq(mStatusFilter));
