@@ -8,14 +8,12 @@ import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import java.util.Date;
-
 class Paint extends SugarRecord<Paint> {
     long guid;
     String name;
     Range range;
     String colorCode;
-    Date updatedAt;
+    long updatedAt;
 
     enum PaintStatus {
         have(0), dontHave(1), need(2), outOf(3);
@@ -45,7 +43,7 @@ class Paint extends SugarRecord<Paint> {
         this.range = range;
         this.status = status;
         this.colorCode = colorCode;
-        this.updatedAt = new Date();
+        this.updatedAt = System.currentTimeMillis();
     }
 
     public Bitmap getColorBitmap(int width, int height) {
@@ -61,25 +59,25 @@ class Paint extends SugarRecord<Paint> {
     public void setRange(int rangeId) {
         Range range = Select.from(Range.class).where(Condition.prop("guid").eq(rangeId)).first();
         this.range = range;
-        this.updatedAt = new Date();
+        this.updatedAt = System.currentTimeMillis();
         this.save();
     }
 
     public void setStatus(PaintStatus status) {
         this.status = status;
-        this.updatedAt = new Date();
+        this.updatedAt = System.currentTimeMillis();
         this.save();
     }
 
     public void setStatus(int status) {
         this.status = PaintStatus.values()[status];
-        this.updatedAt = new Date();
+        this.updatedAt = System.currentTimeMillis();
         this.save();
     }
 
     public void setColorCode(String colorCode) {
         this.colorCode = colorCode;
-        this.updatedAt = new Date();
+        this.updatedAt = System.currentTimeMillis();
         this.save();
     }
 
@@ -108,5 +106,14 @@ class Paint extends SugarRecord<Paint> {
         }
 
         throw new IllegalArgumentException("Status Name is not a valid status");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass() == this.getClass()) {
+            Paint otherPaint = (Paint)o;
+            return this.getId().equals(otherPaint.getId());
+        }
+        return super.equals(o);
     }
 }

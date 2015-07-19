@@ -12,20 +12,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseSyncTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
-        dbSyncTask.doInBackground();
+        DatabaseFixtureHelper.loadFixtures();
     }
 
     public void testUpdatedPaintList() {
         Paint redPaint = Select.from(Paint.class).where(Condition.prop("name").eq("Red")).first();
         redPaint.setStatus(Paint.PaintStatus.need);
-        List<Paint> updatedPaints = DatabaseSyncTask.getUpdatedPaints();
+        List<Paint> updatedPaints = DatabaseSyncHelper.getUpdatedPaints();
         assertTrue(updatedPaints.contains(redPaint));
     }
 

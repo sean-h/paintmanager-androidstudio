@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class DatabaseSyncHelper {
     public static final String TAG = "DatabaseSyncHelper";
 
@@ -96,5 +98,23 @@ public class DatabaseSyncHelper {
             p.setStatus(paint.getInt("status"));
             p.setColorCode(paint.getString("color"));
         }
+    }
+
+    public static List<Paint> getUpdatedPaints() {
+        SyncLog lastSync = Select.from(SyncLog.class)
+                .where(Condition.prop("was_successful").eq(true))
+                .orderBy("sync_time DESC")
+                .first();
+
+        long lastSuccessfulSyncTime;
+        if (lastSync == null) {
+            lastSuccessfulSyncTime = 0;
+        } else {
+            lastSuccessfulSyncTime = lastSync.getSyncTime();
+        }
+
+        return Select.from(Paint.class)
+                .where(Condition.prop("updated_at").gt(lastSuccessfulSyncTime))
+                .list();
     }
 }

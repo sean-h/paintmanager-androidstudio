@@ -27,6 +27,7 @@ public class PaintListActivityTest extends ActivityInstrumentationTestCase2<Pain
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        DatabaseFixtureHelper.loadFixtures();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mActivity = getActivity();
         mRangesSpinner = (Spinner)mActivity.findViewById(R.id.ranges_spinner);
