@@ -49,11 +49,12 @@ public class DatabaseSyncHelper {
             Brand b = Select.from(Brand.class)
                     .where(Condition.prop("guid").eq(brandId))
                     .first();
+            String name = brand.getString("name");
             if (b == null) {
-                b = new Brand();
+                new Brand(brandId, name).save();
+            } else {
+                b.setName(name);
             }
-
-            b.setName(brand.getString("name"));
         }
     }
 
@@ -69,13 +70,14 @@ public class DatabaseSyncHelper {
             Range r = Select.from(Range.class)
                     .where(Condition.prop("guid").eq(rangeId))
                     .first();
-            if (r == null) {
-                r = new Range();
-            }
+            String name = range.getString("name");
+            long brandId = range.getInt("brand_id");
 
-            r.setGuid(rangeId);
-            r.setName(range.getString("name"));
-            r.setBrand(range.getInt("brand_id"));
+            if (r == null) {
+                new Range(rangeId, name, brandId).save();
+            } else {
+                r.setAll(name, brandId);
+            }
         }
     }
 
@@ -91,13 +93,16 @@ public class DatabaseSyncHelper {
             Paint p = Select.from(Paint.class)
                     .where(Condition.prop("guid").eq(paintId))
                     .first();
+            String name = paint.getString("name");
+            long rangeId = paint.getInt("range_id");
+            int status = paint.getInt("status");
+            String colorCode = paint.getString("color");
+
             if (p == null) {
-                p = new Paint();
+                new Paint(paintId, name, rangeId, status, colorCode).save();
+            } else {
+                p.setAll(name, rangeId, status, colorCode);
             }
-            p.name = paint.getString("name");
-            p.setRange(paint.getInt("range_id"));
-            p.setStatus(paint.getInt("status"));
-            p.setColorCode(paint.getString("color"));
         }
     }
 

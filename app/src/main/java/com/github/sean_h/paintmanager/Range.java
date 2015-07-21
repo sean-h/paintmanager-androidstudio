@@ -17,12 +17,28 @@ class Range extends SugarRecord<Range> {
         this.brand = brand;
     }
 
+    public Range(long guid, String name, long brandId) {
+        this.guid = guid;
+        this.name = name;
+        this.brand = Select.from(Brand.class)
+                .where(Condition.prop("guid").eq(brandId))
+                .first();;
+    }
+
     public void setName(String name) {
         this.name = name;
         this.save();
     }
 
     public void setBrand(long brandId) {
+        this.brand = Select.from(Brand.class)
+                .where(Condition.prop("guid").eq(brandId))
+                .first();
+        this.save();
+    }
+
+    public void setAll(String name, long brandId) {
+        this.name = name;
         this.brand = Select.from(Brand.class)
                 .where(Condition.prop("guid").eq(brandId))
                 .first();

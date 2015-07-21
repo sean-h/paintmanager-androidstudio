@@ -46,6 +46,17 @@ class Paint extends SugarRecord<Paint> {
         this.updatedAt = System.currentTimeMillis();
     }
 
+    public Paint(long guid, String name, long rangeId, int statusId, String colorCode) {
+        this.guid = guid;
+        this.name = name;
+        this.range = Select.from(Range.class)
+                    .where(Condition.prop("guid").eq(rangeId))
+                    .first();
+        this.status = PaintStatus.values()[statusId];
+        this.colorCode = colorCode;
+        this.updatedAt = System.currentTimeMillis();
+    }
+
     public Bitmap getColorBitmap(int width, int height) {
         int color = Color.parseColor(colorCode);
         int[] colors = new int[width * height];
@@ -78,6 +89,16 @@ class Paint extends SugarRecord<Paint> {
     public void setColorCode(String colorCode) {
         this.colorCode = colorCode;
         this.updatedAt = System.currentTimeMillis();
+        this.save();
+    }
+
+    public void setAll(String name, long rangeId, int status, String colorCode) {
+        this.name = name;
+        this.range = Select.from(Range.class)
+                .where(Condition.prop("guid").eq(rangeId))
+                .first();
+        this.status = PaintStatus.values()[status];
+        this.colorCode = colorCode;
         this.save();
     }
 
