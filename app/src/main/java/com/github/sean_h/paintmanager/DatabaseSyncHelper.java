@@ -108,7 +108,6 @@ public class DatabaseSyncHelper {
 
     public static List<Paint> getUpdatedPaints() {
         SyncLog lastSync = Select.from(SyncLog.class)
-                .where(Condition.prop("was_successful").eq(true))
                 .orderBy("sync_time DESC")
                 .first();
 
@@ -120,7 +119,7 @@ public class DatabaseSyncHelper {
         }
 
         return Select.from(Paint.class)
-                .where(Condition.prop("updated_at").gt(lastSuccessfulSyncTime))
+                .where("updated_at > " + Long.toString(lastSuccessfulSyncTime))
                 .list();
     }
 }

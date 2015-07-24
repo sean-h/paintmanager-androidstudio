@@ -99,6 +99,7 @@ class Paint extends SugarRecord<Paint> {
                 .first();
         this.status = PaintStatus.values()[status];
         this.colorCode = colorCode;
+        this.updatedAt = System.currentTimeMillis();
         this.save();
     }
 

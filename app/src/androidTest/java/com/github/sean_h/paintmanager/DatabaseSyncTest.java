@@ -12,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseSyncTest extends InstrumentationTestCase {
@@ -54,5 +53,21 @@ public class DatabaseSyncTest extends InstrumentationTestCase {
         assertTrue(Select.from(Brand.class).count() > 0);
         assertTrue(Select.from(Range.class).count() > 0);
         assertTrue(Select.from(Paint.class).count() > 0);
+    }
+
+    public void testGetUpdatedPaints() {
+        SyncLog lastSync = Select.from(SyncLog.class).orderBy("sync_time DESC").first();
+        lastSync.syncTime += 1000;
+        lastSync.save();
+        List<Paint> updatedPaints = DatabaseSyncHelper.getUpdatedPaints();
+        assertEquals(0, updatedPaints.size());
+        Paint red = Select.from(Paint.class)
+                .where(Condition.prop("name").eq("Red"))
+                .first();
+        red.setStatus(2);
+        red.updatedAt += 1000;
+        red.save();
+        updatedPaints = DatabaseSyncHelper.getUpdatedPaints();
+        assertEquals(1, updatedPaints.size());
     }
 }

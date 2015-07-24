@@ -27,6 +27,7 @@ class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
                 DatabaseFixtureHelper.loadFixtures();
             }
         }
+        new SyncLog().save();
         return null;
     }
 
@@ -62,5 +63,4 @@ class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
             }
         });
     }
-
 }

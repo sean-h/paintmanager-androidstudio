@@ -4,13 +4,13 @@ import com.orm.SugarRecord;
 
 class SyncLog extends SugarRecord<SyncLog> {
     long syncTime;
-    boolean wasSuccessful;
 
-    public SyncLog() { }
+    public SyncLog() {
+        this.syncTime = System.currentTimeMillis();
+    }
 
-    public SyncLog(long syncTime, boolean wasSuccessful) {
+    public SyncLog(long syncTime) {
         this.syncTime = syncTime;
-        this.wasSuccessful = wasSuccessful;
     }
 
     public long getSyncTime() {

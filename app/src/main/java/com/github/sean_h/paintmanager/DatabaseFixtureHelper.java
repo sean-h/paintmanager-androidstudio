@@ -25,5 +25,8 @@ public class DatabaseFixtureHelper {
         new Paint(4, "Green", secondaryColors, need, "#00ff00").save();
         new Paint(5, "White", secondaryColors, dontHave, "#ffffff").save();
         new Paint(6, "Black", secondaryColors, dontHave, "#000000").save();
+
+        SyncLog.deleteAll(SyncLog.class);
+        new SyncLog().save();
     }
 }
