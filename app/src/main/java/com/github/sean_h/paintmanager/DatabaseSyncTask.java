@@ -90,7 +90,7 @@ class DatabaseSyncTask extends AsyncTask<String, Void, Void> {
                 long lastSyncTime = Select.from(SyncLog.class)
                         .orderBy("sync_time DESC")
                         .first().syncTime;
-                postData.put("sync_time", lastSyncTime);
+                postData.put("last_sync", lastSyncTime);
             } catch (JSONException ex) {
                 Log.e("DatabaseSyncTask", ex.toString());
             }

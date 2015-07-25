@@ -16,7 +16,7 @@ class Paint extends SugarRecord<Paint> {
     long updatedAt;
 
     enum PaintStatus {
-        have(0), dontHave(1), need(2), outOf(3);
+        nothing(0), dontHave(1), have(2), outOf(3), need(4);
 
         private int value;
         PaintStatus(int value) {
