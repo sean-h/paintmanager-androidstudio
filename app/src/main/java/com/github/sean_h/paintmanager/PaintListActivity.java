@@ -28,10 +28,6 @@ public class PaintListActivity extends ActionBarActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, mPaintListFragment)
                 .commit();
-
-        DatabaseSyncTask dbSyncTask = new DatabaseSyncTask();
-        dbSyncTask.addTaskCompleteListener(mPaintListFragment);
-        dbSyncTask.execute();
     }
 
     public void onSectionAttached(int number) {
