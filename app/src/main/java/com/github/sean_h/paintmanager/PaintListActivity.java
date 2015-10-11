@@ -1,5 +1,6 @@
 package com.github.sean_h.paintmanager;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -7,13 +8,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PaintListActivity extends ActionBarActivity {
+public class PaintListActivity extends ActionBarActivity implements OnTaskCompleted {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
     private PaintListFragment mPaintListFragment;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,10 @@ public class PaintListActivity extends ActionBarActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.container, mPaintListFragment)
                 .commit();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Syncing Data");
+        progressDialog.setMessage("Please wait...");
     }
 
     public void onSectionAttached(int number) {
@@ -80,6 +87,8 @@ public class PaintListActivity extends ActionBarActivity {
     }
 
     private void databaseSync() {
+        progressDialog.show();
+
         String auth_token = this.getSharedPreferences("com.github.sean_h.paintmanager", MODE_PRIVATE)
                 .getString("auth_token", "");
         String syncUrl = getString(R.string.api_url)
@@ -88,6 +97,12 @@ public class PaintListActivity extends ActionBarActivity {
                 + auth_token;
         DatabaseSyncTask syncTask = new DatabaseSyncTask();
         syncTask.addTaskCompleteListener(mPaintListFragment);
+        syncTask.addTaskCompleteListener(this);
         syncTask.execute(syncUrl);
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        progressDialog.dismiss();
     }
 }
