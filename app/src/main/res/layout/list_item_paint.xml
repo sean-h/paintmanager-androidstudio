@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <ImageView
         android:id="@+id/paint_color"
-        android:layout_width="32sp"
-        android:layout_height="match_parent"/>
+        android:layout_width="0sp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
     <TextView
         android:id="@+id/paint_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
-        android:textSize="32sp"
+        android:textSize="16sp"
+        android:text="Paint Name"
+        android:gravity="center_vertical"
         android:paddingStart="8sp"
         android:paddingEnd="8sp"
-        android:layout_toEndOf="@id/paint_color"/>
+        android:layout_weight="8" />
 
     <Button
         android:id="@+id/have_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
+        android:textSize="8sp"
         android:text="@string/have"
-        android:layout_alignParentEnd="true"
+        android:layout_weight="2"
         android:background="@drawable/have_button"/>
     <Button
         android:id="@+id/need_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
+        android:textSize="8sp"
         android:text="@string/need"
-        android:layout_toLeftOf="@id/have_button"
+        android:layout_weight="2"
         android:background="@drawable/need_button"/>
     <Button
         android:id="@+id/dont_have_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0sp"
         android:layout_height="match_parent"
+        android:textSize="8sp"
         android:text="@string/dont_have"
-        android:layout_toLeftOf="@id/need_button"
+        android:layout_weight="2"
         android:background="@drawable/dont_have_button"/>
-</RelativeLayout>
+</LinearLayout>

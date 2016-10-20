@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_url">http://paintmanager.herokuapp.com</string>
+    <string name="api_url">http://192.168.1.129:9292</string>
     <string name="sync_json_url">/sync.json</string>
     <string name="paints_json_url">/paints.json</string>
     <string name="login_url">/login</string>
