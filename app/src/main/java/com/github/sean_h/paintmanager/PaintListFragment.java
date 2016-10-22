@@ -81,6 +81,12 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
 
         mPaintListView = (ListView) rootView.findViewById(R.id.paint_list);
         mPaintListView.setAdapter(mPaintListAdapter);
+        mPaintListView.setOnScrollListener(new EndlessScrollListener(10) {
+            @Override
+            public void onLoadMore(int itemOffset) {
+                loadPaints(itemOffset, 25);
+            }
+        });
 
         mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
         mBrandSpinner.setAdapter(new ArrayAdapter<>(
@@ -190,6 +196,11 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
     }
 
     private void loadPaintList() {
+        mPaints.clear();
+        loadPaints(0, 25);
+    }
+
+    private void loadPaints(int offset, int count) {
         Select<Paint> query = Select.from(Paint.class);
         if (mRangeFilter != null) {
             query = query.where(Condition.prop("range").eq(mRangeFilter.getGuid()));
@@ -198,11 +209,13 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
             query = query.where(Condition.prop("status").eq(mStatusFilter));
         }
 
-        List<Paint> paints = query.orderBy("name").list();
+        String limit = Integer.toString(offset) + "," + Integer.toString(count);
 
-        mPaints.clear();
-        mPaints.addAll(paints);
-        mPaintListAdapter.notifyDataSetChanged();
+        List<Paint> paints = query.orderBy("name").limit(limit).list();
+        if (paints.size() > 0) {
+            mPaints.addAll(paints);
+            mPaintListAdapter.notifyDataSetChanged();
+        }
     }
 
     private void loadSpinners() {
