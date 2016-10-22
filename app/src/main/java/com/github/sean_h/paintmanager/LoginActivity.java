@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,7 +27,7 @@ import com.loopj.android.http.*;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -62,6 +63,18 @@ public class LoginActivity extends Activity {
                 attemptLogin();
             }
         });
+
+        Button testCredentialsButton = (Button) findViewById(R.id.test_credentials);
+        if (testCredentialsButton != null)
+        {
+            testCredentialsButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mEmailView.setText("user@example.com");
+                    mPasswordView.setText("password");
+                }
+            });
+        }
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
