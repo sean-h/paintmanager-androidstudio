@@ -52,4 +52,9 @@ class Range extends SugarRecord<Range> {
     public long getGuid() {
         return guid;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

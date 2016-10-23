@@ -117,17 +117,16 @@ class Paint extends SugarRecord<Paint> {
         }
     }
 
-    public static PaintStatus getStatusIdFromName(String statusName, Activity activity)
-            throws IllegalArgumentException {
+    public static PaintStatus getStatusIdFromName(String statusName, Activity activity) {
         if (statusName == activity.getString(R.string.have)) {
             return PaintStatus.have;
         } else if (statusName == activity.getString(R.string.dont_have)) {
             return PaintStatus.dontHave;
         } else if (statusName == activity.getString(R.string.need)) {
             return PaintStatus.need;
+        } else {
+            return null;
         }
-
-        throw new IllegalArgumentException("Status Name is not a valid status");
     }
 
     @Override

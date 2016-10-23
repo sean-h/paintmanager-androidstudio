@@ -12,9 +12,9 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
-    <string name="brand_spinner_default">--- Brand ---</string>
-    <string name="range_spinner_default">--- Range ---</string>
-    <string name="status_spinner_default">--- Status ---</string>
+    <string name="brand_spinner_default">All</string>
+    <string name="range_spinner_default">All</string>
+    <string name="status_spinner_default">All</string>
     <string name="paint_list_title">Paint List</string>
     <string name="have">Have</string>
     <string name="dont_have">Don\'t Have</string>

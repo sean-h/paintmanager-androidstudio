@@ -7,12 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -38,15 +35,12 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
     private List<Paint> mPaints;
     private PaintListAdapter mPaintListAdapter;
 
-    private Spinner mBrandSpinner;
     private final List<String> mBrandNames;
-    private Spinner mRangeSpinner;
     private final List<String> mRangeNames;
-    private Range mRangeFilter;
-    private Spinner mStatusSpinner;
     private final List<String> mStatusNames;
-    private Paint.PaintStatus mStatusFilter;
     private OnFragmentInteractionListener mListener;
+
+    private Select<Paint> mPaintQuery;
 
     /**
      * Use this factory method to create a new instance of
@@ -85,70 +79,6 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
             @Override
             public void onLoadMore(int itemOffset) {
                 loadPaints(itemOffset, 25);
-            }
-        });
-
-        mBrandSpinner = (Spinner) rootView.findViewById(R.id.brands_spinner);
-        mBrandSpinner.setAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_spinner_dropdown_item,
-                android.R.id.text1,
-                mBrandNames
-        ));
-
-        mRangeSpinner = (Spinner) rootView.findViewById(R.id.ranges_spinner);
-        mRangeSpinner.setAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_spinner_dropdown_item,
-                android.R.id.text1,
-                mRangeNames
-        ));
-        mRangeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    String rangeName = (String) mRangeSpinner.getItemAtPosition(position);
-                    mRangeFilter = Select.from(Range.class)
-                            .where(Condition.prop("name").eq(rangeName))
-                            .first();
-                } else {
-                    mRangeFilter = null;
-                }
-                loadPaintList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        mStatusSpinner = (Spinner) rootView.findViewById(R.id.statuses_spinner);
-        mStatusSpinner.setAdapter(new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_spinner_dropdown_item,
-                android.R.id.text1,
-                mStatusNames
-        ));
-        mStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != 0) {
-                    String statusName = (String) mStatusSpinner.getItemAtPosition(position);
-                    try {
-                        mStatusFilter = Paint.getStatusIdFromName(statusName, getActivity());
-                    } catch (IllegalArgumentException ex) {
-                        mStatusFilter = null;
-                    }
-                } else {
-                    mStatusFilter = null;
-                }
-                loadPaintList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -201,21 +131,33 @@ public class PaintListFragment extends Fragment implements OnTaskCompleted {
     }
 
     private void loadPaints(int offset, int count) {
-        Select<Paint> query = Select.from(Paint.class);
+        /*Select<Paint> query = Select.from(Paint.class);
         if (mRangeFilter != null) {
             query = query.where(Condition.prop("range").eq(mRangeFilter.getGuid()));
         }
         if (mStatusFilter != null) {
             query = query.where(Condition.prop("status").eq(mStatusFilter));
+        }*/
+
+        if (mPaintQuery == null) {
+            mPaintQuery = Select.from(Paint.class);
         }
 
         String limit = Integer.toString(offset) + "," + Integer.toString(count);
 
-        List<Paint> paints = query.orderBy("name").limit(limit).list();
+        //List<Paint> paints = query.orderBy("name").limit(limit).list();
+        List<Paint> paints = mPaintQuery.orderBy("name").limit(limit).list();
         if (paints.size() > 0) {
             mPaints.addAll(paints);
             mPaintListAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setPaintQuery(Select<Paint> query) {
+        mPaintQuery = query;
+        mPaints.clear();
+        mPaintListAdapter.notifyDataSetChanged();
+        loadPaints(0, 25);
     }
 
     private void loadSpinners() {

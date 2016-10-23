@@ -1,5 +1,6 @@
 package com.github.sean_h.paintmanager;
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PaintListActivity extends ActionBarActivity implements OnTaskCompleted {
+public class PaintListActivity extends ActionBarActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -78,6 +79,12 @@ public class PaintListActivity extends ActionBarActivity implements OnTaskComple
             return true;
         }
 
+        if (id == R.id.filter_button) {
+            DialogFragment filterDialog = new PaintFilterDialogFragment();
+            filterDialog.show(getFragmentManager(), "Filter Paints");
+            return true;
+        }
+
         if (item.getItemId() == R.id.sync_button) {
             databaseSync();
             return true;
@@ -104,5 +111,18 @@ public class PaintListActivity extends ActionBarActivity implements OnTaskComple
     @Override
     public void onTaskCompleted() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        PaintFilterDialogFragment paintFilterDialog = (PaintFilterDialogFragment) dialog;
+        if (paintFilterDialog != null) {
+            mPaintListFragment.setPaintQuery(paintFilterDialog.getFilterQuery());
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }

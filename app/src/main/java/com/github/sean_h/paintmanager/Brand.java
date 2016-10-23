@@ -19,4 +19,9 @@ class Brand extends SugarRecord<Brand> {
         this.name = name;
         this.save();
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
