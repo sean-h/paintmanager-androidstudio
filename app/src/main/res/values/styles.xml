@@ -1,8 +1,9 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:ThemeOverlay.Material.Dark.ActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">#0091EA</item>
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
+        <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_dark</item>
+        <item name="android:titleTextStyle">@style/Base.TextAppearance.AppCompat.Medium.Inverse</item>
+        <item name="android:statusBarColor">#FFAB40</item>
     </style>
-
 </resources>

@@ -4,80 +4,91 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Filter Paints"
-        style="@style/Base.TextAppearance.AppCompat.Large"/>
+        android:padding="4dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Brands"
-            android:layout_marginTop="8dp"
-            android:labelFor="@+id/filter_brands_spinner"/>
-        <Spinner
-            android:id="@+id/filter_brands_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:padding="4dp">
-        </Spinner>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Ranges"
-            android:labelFor="@+id/filter_ranges_spinner"/>
-        <Spinner
-            android:id="@+id/filter_ranges_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:padding="4dp">
-        </Spinner>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Statuses"
-            android:labelFor="@+id/filter_statuses_spinner"/>
-        <Spinner
-            android:id="@+id/filter_statuses_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp">
-        </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right">
-        <Button
-            android:id="@+id/filter_cancel"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Cancel"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            />
-        <Button
-            android:id="@+id/filter_accept"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Filter"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Brands"
+                    android:layout_marginTop="8dp"
+                    android:labelFor="@+id/filter_brands_spinner"/>
+                <Spinner
+                    android:id="@+id/filter_brands_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:padding="4dp">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Ranges"
+                    android:labelFor="@+id/filter_ranges_spinner"/>
+                <Spinner
+                    android:id="@+id/filter_ranges_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:padding="4dp">
+                </Spinner>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Statuses"
+                    android:labelFor="@+id/filter_statuses_spinner"/>
+                <Spinner
+                    android:id="@+id/filter_statuses_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+                </Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+                <Button
+                    android:id="@+id/filter_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Cancel"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    />
+                <Button
+                    android:id="@+id/filter_accept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Filter"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

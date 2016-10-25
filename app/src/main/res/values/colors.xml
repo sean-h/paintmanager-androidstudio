@@ -7,4 +7,5 @@
     <color name="need_selected">#F44336</color>
     <color name="need_pressed">#EF9A9A</color>
     <color name="unselected">#333333</color>
+    <color name="foreground_material_light">#ffffff</color>
 </resources>

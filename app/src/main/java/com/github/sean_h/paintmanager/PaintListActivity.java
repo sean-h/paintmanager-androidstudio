@@ -1,15 +1,18 @@
 package com.github.sean_h.paintmanager;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PaintListActivity extends ActionBarActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener {
+public class PaintListActivity extends AppCompatActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -23,6 +26,10 @@ public class PaintListActivity extends ActionBarActivity implements OnTaskComple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paint_list);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.paint_list_title);
 
         mTitle = getTitle();
 
