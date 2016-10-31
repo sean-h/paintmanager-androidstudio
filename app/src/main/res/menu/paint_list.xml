@@ -10,6 +10,9 @@
           android:title="Sync"
           android:icon="@drawable/ic_sync_black_48dp"
           app:showAsAction="ifRoom" />
+    <item android:id="@+id/barcode_button"
+        android:title="Barcode Scanner"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/action_settings" android:icon="@drawable/ic_settings_black_48dp" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
 </menu>

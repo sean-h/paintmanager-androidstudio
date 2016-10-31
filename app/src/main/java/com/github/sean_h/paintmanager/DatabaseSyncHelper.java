@@ -35,6 +35,13 @@ public class DatabaseSyncHelper {
         } catch (JSONException ex) {
             Log.e(TAG, "Error parsing paint data from JSON");
         }
+
+        try {
+            JSONArray barcodesArray = jsonData.getJSONArray("barcode");
+            loadBarcodes(barcodesArray);
+        } catch (JSONException ex) {
+            Log.e(TAG, "Error parsing barcode data from JSON");
+        }
     }
 
     private void loadBrands(JSONArray brandsArray) throws  JSONException {
@@ -102,6 +109,29 @@ public class DatabaseSyncHelper {
                 new Paint(paintId, name, rangeId, status, colorCode).save();
             } else {
                 p.setAll(name, rangeId, status, colorCode);
+            }
+        }
+    }
+
+    private void loadBarcodes(JSONArray barcodesArray) throws  JSONException {
+        if (barcodesArray == null) {
+            return;
+        }
+
+        for (int i = 0; i < barcodesArray.length(); i++) {
+            JSONObject barcode = barcodesArray.getJSONObject(i);
+            long barcodeId = barcode.getInt("id");
+
+            Barcode b = Select.from(Barcode.class)
+                    .where(Condition.prop("guid").eq(barcodeId))
+                    .first();
+            int paintId = barcode.getInt("paint_id");
+            String code = barcode.getString("barcode");
+
+            if (b == null) {
+                new Barcode(barcodeId, paintId, code).save();
+            } else {
+                b.setAll(barcodeId, paintId, code);
             }
         }
     }

@@ -3,6 +3,7 @@ package com.github.sean_h.paintmanager;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.orm.query.Select;
+
+import java.util.List;
 
 public class PaintListActivity extends AppCompatActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener {
     /**
@@ -81,19 +87,22 @@ public class PaintListActivity extends AppCompatActivity implements OnTaskComple
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
-        if (id == R.id.filter_button) {
+        else if (id == R.id.filter_button) {
             DialogFragment filterDialog = new PaintFilterDialogFragment();
             filterDialog.show(getFragmentManager(), "Filter Paints");
             return true;
         }
-
-        if (item.getItemId() == R.id.sync_button) {
+        else if (item.getItemId() == R.id.sync_button) {
             databaseSync();
+            return true;
+        } else if (item.getItemId() == R.id.barcode_button) {
+            Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+            intent.setPackage("com.google.zxing.client.android");
+            intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            startActivityForResult(intent, 0);
             return true;
         }
 
@@ -131,5 +140,23 @@ public class PaintListActivity extends AppCompatActivity implements OnTaskComple
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = data.getStringExtra("SCAN_RESULT");
+                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+
+                List<Barcode> barcodes = Barcode.find(Barcode.class, "barcode = ?", contents);
+                if (barcodes.size() == 0) {
+                    Toast.makeText(this, "Unknown Paint", Toast.LENGTH_LONG).show();
+                } else {
+                    Paint p = barcodes.get(0).paint;
+                    Toast.makeText(this, p.name, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 }
