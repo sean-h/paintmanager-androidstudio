@@ -14,11 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.github.sean_h.paintmanager.PaintDetailsDialogFragment.PaintDetailsDialogListener;
 import com.orm.query.Select;
 
 import java.util.List;
 
-public class PaintListActivity extends AppCompatActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener {
+public class PaintListActivity extends AppCompatActivity implements OnTaskCompleted, PaintFilterDialogFragment.PaintFilterDialogListener, PaintDetailsDialogListener {
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -131,9 +132,13 @@ public class PaintListActivity extends AppCompatActivity implements OnTaskComple
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        PaintFilterDialogFragment paintFilterDialog = (PaintFilterDialogFragment) dialog;
-        if (paintFilterDialog != null) {
+        if (dialog instanceof PaintFilterDialogFragment) {
+            PaintFilterDialogFragment paintFilterDialog = (PaintFilterDialogFragment) dialog;
             mPaintListFragment.setPaintQuery(paintFilterDialog.getFilterQuery());
+        }
+        else if (dialog instanceof PaintDetailsDialogFragment) {
+            PaintDetailsDialogFragment paintDetailsDialogFragment = (PaintDetailsDialogFragment) dialog;
+            mPaintListFragment.refresh();
         }
     }
 
@@ -154,7 +159,10 @@ public class PaintListActivity extends AppCompatActivity implements OnTaskComple
                     Toast.makeText(this, "Unknown Paint", Toast.LENGTH_LONG).show();
                 } else {
                     Paint p = barcodes.get(0).paint;
-                    Toast.makeText(this, p.name, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, p.name, Toast.LENGTH_LONG).show();
+
+                    DialogFragment paintDetailsDialog = PaintDetailsDialogFragment.newInstance(p);
+                    paintDetailsDialog.show(getFragmentManager(), "Paint Details");
                 }
             }
         }
