@@ -12,6 +12,7 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+    <string name="logout">Log out</string>
     <string name="brand_spinner_default">All</string>
     <string name="range_spinner_default">All</string>
     <string name="status_spinner_default">All</string>

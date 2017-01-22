@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -96,14 +97,22 @@ public class PaintListActivity extends AppCompatActivity implements OnTaskComple
             filterDialog.show(getFragmentManager(), "Filter Paints");
             return true;
         }
-        else if (item.getItemId() == R.id.sync_button) {
+        else if (id == R.id.sync_button) {
             databaseSync();
             return true;
-        } else if (item.getItemId() == R.id.barcode_button) {
+        } else if (id == R.id.barcode_button) {
             Intent intent = new Intent("com.google.zxing.client.android.SCAN");
             intent.setPackage("com.google.zxing.client.android");
             intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
             startActivityForResult(intent, 0);
+            return true;
+        } else if (id == R.id.logout) {
+            SharedPreferences prefs = this.getSharedPreferences("com.github.sean_h.paintmanager", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("auth_token");
+            editor.commit();
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
             return true;
         }
 
